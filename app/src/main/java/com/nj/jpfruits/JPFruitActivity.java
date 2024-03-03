@@ -37,12 +37,12 @@ public class JPFruitActivity extends AppCompatActivity {
             return;
         }
 
-        FragmentImage frag_image = new FragmentImage();
+        FragmentMain frag_main = new FragmentMain(fragment_manager);
 
         FragmentTransaction ft;
         ft = fragment_manager.beginTransaction();
         ft.setReorderingAllowed(true);
-        ft.replace(R.id.fragment_activity_main, frag_image);
+        ft.replace(R.id.fragment_activity_main, frag_main);
         ft.commit();
     }
 }

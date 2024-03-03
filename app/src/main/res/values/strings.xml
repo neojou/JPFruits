@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">JPFruits</string>
-    <string name="img_name">Fuji</string>
+    <string name="img_name">Fruits</string>
+    <string name="button_start_str">Start</string>
+    <string name="button_quit_str">Quit</string>
 </resources>
