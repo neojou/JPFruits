@@ -1,6 +1,23 @@
 <resources>
     <string name="app_name">JPFruits</string>
     <string name="img_name">Fruits</string>
+    <string name="question_title">Fruits</string>
+
+    <!-- Buttons -->
     <string name="button_start_str">Start</string>
     <string name="button_quit_str">Quit</string>
+    <string name="button_finished_str">Finished</string>
+    <string name="button_answer_str">Answer</string>
+    <string name="button_next_str">Next</string>
+    <string name="button_return_str">Return</string>
+
+    <!-- Question page -->
+    <string name="choice_title">Your choice is </string>
+    <string name="correct">Correct</string>
+    <string name="wrong">Wrong</string>
+
+    <!-- Test Statistics -->
+    <string name="stats_total_str">Answered: %1$d </string>
+    <string name="stats_each_str">Correct: %1$d , Wrong: %2$d </string>
+    <string name="stats_rate_str">Score: %1$d %%</string>
 </resources>
