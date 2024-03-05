@@ -2,6 +2,7 @@
     <string name="app_name">JPFruits</string>
     <string name="img_name">Fruits</string>
     <string name="question_title">Fruits</string>
+    <string name="img_content_name"> Fruit Image</string>
 
     <!-- Buttons -->
     <string name="button_start_str">Start</string>

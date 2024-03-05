@@ -25,10 +25,11 @@
             android:layout_width="180dip"
             android:layout_height="320dip"
             android:scaleType="fitXY"
-            android:src="@drawable/strawberry"
+            android:contentDescription="@string/img_content_name"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            app:layout_constraintStart_toEndOf="@+id/question_title"/>
+            app:layout_constraintStart_toEndOf="@+id/question_title"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/question_content"
@@ -37,9 +38,8 @@
             android:textAlignment="center"
             android:textSize="32sp"
             android:textColor="@color/gray"
-            app:layout_constraintStart_toEndOf="@+id/question_image" />
-
-
+            app:layout_constraintStart_toEndOf="@+id/question_image"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/choice_title"
@@ -50,8 +50,7 @@
             android:textSize="32sp"
             android:textColor="@color/gray"
             app:layout_constraintStart_toEndOf="@+id/question_content"
-
-            />
+            tools:ignore="MissingConstraints" />
 
         <RadioGroup
             android:id="@+id/choices"
@@ -62,21 +61,23 @@
             android:layout_marginEnd="10dp"
             android:orientation="vertical"
             app:layout_constraintStart_toEndOf="@+id/choice_title"
-            >
+            tools:ignore="MissingConstraints">
 
             <RadioButton
                 android:id="@+id/choice1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="viewStart"
                 android:buttonTint="@color/radio_color"
-                android:textSize="32sp" />
+                android:minHeight="48dp"
+                android:textSize="32sp"
+                tools:ignore="DuplicateSpeakableTextCheck" />
 
             <RadioButton
                 android:id="@+id/choice2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/radio_color"
+                android:minHeight="48dp"
                 android:textSize="32sp" />
 
             <RadioButton
@@ -84,6 +85,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/radio_color"
+                android:minHeight="48dp"
                 android:textSize="32sp" />
 
             <RadioButton
@@ -91,7 +93,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:buttonTint="@color/radio_color"
+                android:minHeight="48dp"
                 android:textSize="32sp" />
+
         </RadioGroup>
 
 

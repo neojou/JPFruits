@@ -116,7 +116,7 @@ public class FragmentMain extends Fragment
     }
 
     private void to_question_start() {
-        Log.d(TAG, "to_start");
+        //Log.d(TAG, "to_start");
 
         switch_to_question();
 
@@ -127,7 +127,7 @@ public class FragmentMain extends Fragment
 
 
     private void to_check_answer() {
-        Log.d(TAG, "check_answer");
+        //Log.d(TAG, "check_answer");
 
         frag_question.check_answer();
 
@@ -137,9 +137,9 @@ public class FragmentMain extends Fragment
 
 
     private void to_next_question() {
-        Log.d(TAG, "next_question");
+        //Log.d(TAG, "next_question");
 
-        if ( frag_question.next_question() ) {
+        if ( frag_question.set_next_question() ) {
             isAnswered = false;
             set_buttons_to_question();
         } else {
@@ -148,7 +148,7 @@ public class FragmentMain extends Fragment
     }
 
     private void to_question_finished() {
-        Log.d(TAG, "to_question_finished");
+        //Log.d(TAG, "to_question_finished");
 
         frag_question.finish_answer();
 
@@ -157,13 +157,13 @@ public class FragmentMain extends Fragment
     }
 
     private void return_to_main() {
-        Log.d(TAG, "return to main");
+        //Log.d(TAG, "return to main");
         isAnswered = false;
         switch_to_main_page();
     }
 
     private void to_quit() {
-        Log.d(TAG, "to_quit");
+        //Log.d(TAG, "to_quit");
         getActivity().finish();
         System.exit(0);
     }

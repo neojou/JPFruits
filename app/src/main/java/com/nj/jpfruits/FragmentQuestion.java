@@ -1,5 +1,6 @@
 package com.nj.jpfruits;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.content.Context;
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.nj.jpfruits.databinding.FragmentQuestionBinding;
 
 
 import java.util.List;
+import java.util.ArrayList;
 import java.lang.Integer;
 public class FragmentQuestion extends Fragment
 {
@@ -33,6 +35,8 @@ public class FragmentQuestion extends Fragment
     RadioButton[] choice_rb = new RadioButton[4];
     String[] choices = new String[4];
 
+    ArrayList<Question> questions;
+    int cur_question_id;
 
     int total_answered;
     int correct_answered;
@@ -41,6 +45,7 @@ public class FragmentQuestion extends Fragment
     public FragmentQuestion()
     {
         super(R.layout.fragment_question);
+        setup_questions();
         stats_set_start();
     }
 
@@ -78,8 +83,42 @@ public class FragmentQuestion extends Fragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        cur_question = new Question("strawberry", "もも", "イチゴ", "リンゴ", "バナナ", 2);
-        set_question_to_view(cur_question);
+        set_next_question();
+    }
+
+    private void setup_questions() {
+        questions = new ArrayList<Question>();
+        Question q;
+        //1
+        q = new Question("strawberry", "もも", "イチゴ", "リンゴ", "バナナ", 2);
+        questions.add(q);
+        //2
+        q = new Question("orange", "オレンジ", "キウイ", "リンゴ", "スイカ", 1);
+        questions.add(q);
+        //3
+        q = new Question("banana", "リンゴ", "キウイ", "もも", "バナナ", 4);
+        questions.add(q);
+        //4
+        q = new Question("kiwi", "リンゴ", "キウイ", "イチゴ", "バナナ", 2);
+        questions.add(q);
+        //5
+        q = new Question("watermelon", "もも", "キウイ", "スイカ", "イチゴ", 3);
+        questions.add(q);
+        //6
+        q = new Question("grape", "スイカ", "オレンジ", "ブドウ", "イチゴ", 3);
+        questions.add(q);
+        //7
+        q = new Question("apple", "キウイ", "バナナ", "リンゴ", "イチゴ", 3);
+        questions.add(q);
+        //8
+        q = new Question("pineapple", "パイナップル", "イチゴ", "バナナ", "もも", 1);
+        questions.add(q);
+        //9
+        q = new Question("dragonfruit", "スイカ", "ドラゴンフルーツ", "キウイ", "リンゴ", 2);
+        questions.add(q);
+        //10
+        q = new Question("peach", "オレンジ", "スイカ", "リンゴ", "もも", 4);
+        questions.add(q);
     }
 
     public void check_answer() {
@@ -113,9 +152,14 @@ public class FragmentQuestion extends Fragment
         }
     }
 
-    public boolean next_question() {
-        //cur_question = randomGetQuestion();
-        return false;
+    public boolean set_next_question() {
+        cur_question = null;
+        cur_question_id++;
+        if (cur_question_id > questions.size())
+            return false;
+        cur_question = questions.get(cur_question_id - 1);
+        set_question_to_view(cur_question);
+        return true;
     }
 
     public void finish_answer() {
@@ -123,11 +167,18 @@ public class FragmentQuestion extends Fragment
     }
 
     private void set_question_to_view(Question q) {
-        Log.d(TAG, "set_question_to_view");
+        //Log.d(TAG, "set_question_to_view");
 
         question_title.setVisibility(View.VISIBLE);
         question_title.setText(q.img_filename);
+
+        // question_image
+        Activity activity = getActivity();
+        int id = activity.getResources().getIdentifier(q.img_filename, "drawable", activity.getPackageName());
+        question_image.setImageResource(id);
+        question_image.setScaleType(ImageView.ScaleType.FIT_XY);
         question_image.setVisibility(View.VISIBLE);
+
         question_content.setVisibility(View.INVISIBLE);
         choice_title.setVisibility(View.INVISIBLE);
         choice_rd.setVisibility(View.VISIBLE);
@@ -187,6 +238,7 @@ public class FragmentQuestion extends Fragment
         total_answered = 0;
         correct_answered = 0;
         wrong_answered = 0;
+        cur_question_id = 0;
     }
 
     private void stats_add_if_answered_correct(boolean isCorrect) {
@@ -198,25 +250,25 @@ public class FragmentQuestion extends Fragment
     }
 
     private void stats_show() {
-        question_title.setVisibility(View.VISIBLE);
+        question_title.setVisibility(View.INVISIBLE);
         question_image.setVisibility(View.INVISIBLE);
         question_content.setVisibility(View.VISIBLE);
         question_content.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         choice_title.setVisibility(View.VISIBLE);
         choice_rd.setVisibility(View.INVISIBLE);
 
-        Log.d(TAG, "Total answered =" + Integer.toString(total_answered));
-        Log.d(TAG, "Correct answers =" + Integer.toString(correct_answered));
-        Log.d(TAG, "Wrong answers =" + Integer.toString(wrong_answered));
+        //Log.d(TAG, "Total answered =" + Integer.toString(total_answered));
+        //Log.d(TAG, "Correct answers =" + Integer.toString(correct_answered));
+        //Log.d(TAG, "Wrong answers =" + Integer.toString(wrong_answered));
 
         int rate = 0;
         if (total_answered != 0)
             rate = correct_answered * 100 / total_answered;
-        Log.d(TAG, "correct rate: " + Integer.toString(rate) +"%");
+        //Log.d(TAG, "correct rate: " + Integer.toString(rate) +"%");
 
-        question_title.setText(getString(R.string.stats_total_str, total_answered));
-        question_content.setText(getString(R.string.stats_each_str,
-                correct_answered, wrong_answered));
+        String contentStr = getString(R.string.stats_total_str, total_answered) + "\n\n";
+        contentStr += getString(R.string.stats_each_str, correct_answered, wrong_answered);
+        question_content.setText(contentStr);
         choice_title.setText(getString(R.string.stats_rate_str, rate));
     }
 }
