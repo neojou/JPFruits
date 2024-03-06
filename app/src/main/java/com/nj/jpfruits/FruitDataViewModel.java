@@ -38,7 +38,7 @@ public class FruitDataViewModel {
         while ((fn = fp.getFruitName()) != null) {
             fa.add(fn);
         };
-        FruitName.log_dump(fa);
+        //FruitName.log_dump(fa);
         fp.close();
 
     }

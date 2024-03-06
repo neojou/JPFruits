@@ -104,7 +104,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:constraint_referenced_ids="fragment_main, layout_buttons, start_progressBar"
+            app:constraint_referenced_ids="fragment_main, layout_buttons"
             app:flow_horizontalAlign="center"
             app:flow_verticalAlign="bottom"
             app:flow_verticalStyle="spread"
