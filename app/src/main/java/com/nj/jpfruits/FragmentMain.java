@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
@@ -16,10 +17,12 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.nj.jpfruits.databinding.FragmentMainBinding;
 
-public class FragmentMain extends Fragment
+public class FragmentMain extends NJFragment
         implements View.OnClickListener {
     private static final String TAG="JPFruits:FragmentMain";
     final private FragmentManager fragment_manager;
+
+    FruitDataViewModel fruit_dvm;
 
     FragmentMainBinding binding;
     FragmentTransaction ft;
@@ -38,6 +41,7 @@ public class FragmentMain extends Fragment
     boolean isAnswered;
 
 
+
     public FragmentMain(FragmentManager fm)
     {
         super(R.layout.fragment_main);
@@ -52,9 +56,9 @@ public class FragmentMain extends Fragment
     ) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
         setViewItemsBinding();
+        fruit_dvm = new FruitDataViewModel(getActivity().getApplication(), R.raw.fruits_data);
+        binding.setFruitDvm(fruit_dvm);
         setButtons();
-
-        switch_to_main_page();
 
         isStarted = false;
         isFinished = false;
@@ -80,9 +84,9 @@ public class FragmentMain extends Fragment
         binding = null;
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void async_func() {
+        fruit_dvm.load_data();
+        switch_to_main_page();
     }
 
     private void setButtons() {
@@ -116,7 +120,7 @@ public class FragmentMain extends Fragment
     }
 
     private void to_question_start() {
-        //Log.d(TAG, "to_start");
+        Log.d(TAG, "to_start");
 
         switch_to_question();
 

@@ -182,7 +182,6 @@ public class FragmentQuestion extends Fragment
         question_content.setVisibility(View.INVISIBLE);
         choice_title.setVisibility(View.INVISIBLE);
         choice_rd.setVisibility(View.VISIBLE);
-        choice_title.setText(getString(R.string.choice_title));
         choices[0] = q.choice1;
         choices[1] = q.choice2;
         choices[2] = q.choice3;
