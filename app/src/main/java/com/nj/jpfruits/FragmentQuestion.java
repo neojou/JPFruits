@@ -21,10 +21,15 @@ import com.nj.jpfruits.databinding.FragmentQuestionBinding;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.lang.Integer;
+
 public class FragmentQuestion extends Fragment
 {
     private static final String TAG="JPFruits:FragmentQuestion";
+
+    final private FruitDataViewModel fruit_dvm;
+
     FragmentQuestionBinding binding;
     Question cur_question;
     TextView question_title;
@@ -42,10 +47,14 @@ public class FragmentQuestion extends Fragment
     int correct_answered;
     int wrong_answered;
 
-    public FragmentQuestion()
+    public FragmentQuestion(FruitDataViewModel dvm)
     {
         super(R.layout.fragment_question);
-        setup_questions();
+
+        fruit_dvm = dvm;
+        //setup_questions();
+        cur_question_id = 0;
+        fruit_dvm.shuffle();
         stats_set_start();
     }
 
@@ -57,6 +66,7 @@ public class FragmentQuestion extends Fragment
     ) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_question, container, false);
         setViewItemsBinding();
+        binding.setFruitDvm(fruit_dvm);
         return binding.getRoot();
     }
 
@@ -77,6 +87,8 @@ public class FragmentQuestion extends Fragment
         super.onDestroyView();
         binding = null;
         cur_question = null;
+        cur_question_id = 0;
+        fruit_dvm.shuffle();
         stats_set_start();
     }
 
@@ -86,40 +98,6 @@ public class FragmentQuestion extends Fragment
         set_next_question();
     }
 
-    private void setup_questions() {
-        questions = new ArrayList<Question>();
-        Question q;
-        //1
-        q = new Question("strawberry", "もも", "イチゴ", "リンゴ", "バナナ", 2);
-        questions.add(q);
-        //2
-        q = new Question("orange", "オレンジ", "キウイ", "リンゴ", "スイカ", 1);
-        questions.add(q);
-        //3
-        q = new Question("banana", "リンゴ", "キウイ", "もも", "バナナ", 4);
-        questions.add(q);
-        //4
-        q = new Question("kiwi", "リンゴ", "キウイ", "イチゴ", "バナナ", 2);
-        questions.add(q);
-        //5
-        q = new Question("watermelon", "もも", "キウイ", "スイカ", "イチゴ", 3);
-        questions.add(q);
-        //6
-        q = new Question("grape", "スイカ", "オレンジ", "ブドウ", "イチゴ", 3);
-        questions.add(q);
-        //7
-        q = new Question("apple", "キウイ", "バナナ", "リンゴ", "イチゴ", 3);
-        questions.add(q);
-        //8
-        q = new Question("pineapple", "パイナップル", "イチゴ", "バナナ", "もも", 1);
-        questions.add(q);
-        //9
-        q = new Question("dragonfruit", "スイカ", "ドラゴンフルーツ", "キウイ", "リンゴ", 2);
-        questions.add(q);
-        //10
-        q = new Question("peach", "オレンジ", "スイカ", "リンゴ", "もも", 4);
-        questions.add(q);
-    }
 
     public void check_answer() {
         if (cur_question == null) {
@@ -152,12 +130,60 @@ public class FragmentQuestion extends Fragment
         }
     }
 
+    private Question generate_question(int pos) {
+        String fruit_name = fruit_dvm.get_fruit_engname_by_array_pos(pos);
+        if (fruit_name == null) {
+            Log.e(TAG,"generate_question(): pos=" + pos + " is wrong");
+            return null;
+        }
+        String jp_name = fruit_dvm.get_fruit_jpname_by_engname(fruit_name);
+        if (jp_name == null) {
+            Log.e(TAG,"generate_question(): cannot find jpname by : " + fruit_name);
+            return null;
+        }
+
+        ArrayList<String> fruit_array_temp = fruit_dvm.copy_jpfruits_array();
+        if (fruit_array_temp == null) {
+            Log.e(TAG,"generate_question(): fruit array is null");
+            return null;
+        }
+        if (fruit_array_temp.size() < 5) {
+            Log.e(TAG,"generate_question(): fruit array size is "
+                    + fruit_array_temp.size() + "less then 5");
+            return null;
+        }
+        Collections.shuffle(fruit_array_temp);
+        fruit_array_temp = new ArrayList<String>(fruit_array_temp.subList(0, 5));
+        int correct_answer = (int)(Math.random()*(4-1+1) + 1);
+        String[] choice_str = new String[4];
+        int other_answer_id = 0;
+        for (int i = 0; i < 4; i++) {
+            if (i == correct_answer - 1) {
+                choice_str[i] = jp_name;
+                continue;
+            }
+            if (jp_name.equals(fruit_array_temp.get(other_answer_id))) {
+                //Log.i(TAG, "found the same in choices");
+                other_answer_id++;
+            }
+            if (other_answer_id >= 5) {
+                Log.e(TAG,"generate_question(): other_answer_id = "
+                        + other_answer_id + ">= 5");
+                return null;
+            }
+            choice_str[i] = fruit_array_temp.get(other_answer_id);
+            other_answer_id++;
+        }
+
+        return new Question(fruit_name, choice_str[0], choice_str[1], choice_str[2], choice_str[3], correct_answer);
+    }
+
     public boolean set_next_question() {
         cur_question = null;
         cur_question_id++;
-        if (cur_question_id > questions.size())
+        if (cur_question_id > fruit_dvm.get_fruit_array_size())
             return false;
-        cur_question = questions.get(cur_question_id - 1);
+        cur_question = generate_question(cur_question_id - 1);
         set_question_to_view(cur_question);
         return true;
     }
@@ -167,13 +193,21 @@ public class FragmentQuestion extends Fragment
     }
 
     private void set_question_to_view(Question q) {
+        if (q == null) {
+            Log.e(TAG, "set_question_to_view() : input Question is null");
+            return;
+        }
         //Log.d(TAG, "set_question_to_view");
 
-        question_title.setVisibility(View.VISIBLE);
-        question_title.setText(q.img_filename);
+        question_title.setVisibility(View.INVISIBLE);
+        //question_title.setText(q.img_filename);
 
         // question_image
         Activity activity = getActivity();
+        if (activity == null) {
+            Log.e(TAG, "set_question_to_view() : getActivity() is null");
+            return;
+        }
         int id = activity.getResources().getIdentifier(q.img_filename, "drawable", activity.getPackageName());
         question_image.setImageResource(id);
         question_image.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -237,7 +271,6 @@ public class FragmentQuestion extends Fragment
         total_answered = 0;
         correct_answered = 0;
         wrong_answered = 0;
-        cur_question_id = 0;
     }
 
     private void stats_add_if_answered_correct(boolean isCorrect) {

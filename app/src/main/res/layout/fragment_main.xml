@@ -83,20 +83,10 @@
                 android:text="@string/button_return_str"
                 android:textColor="@color/button_text_color"
                 android:backgroundTint="@color/button_background_color"
-                app:layout_constraintEnd_toStartOf="@+id/button_quit"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/button_finished" />
 
-            <Button
-                android:id="@+id/button_quit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/button_quit_str"
-                android:textColor="@color/button_text_color"
-                android:backgroundTint="@color/button_background_color"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/button_return" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.helper.widget.Flow
