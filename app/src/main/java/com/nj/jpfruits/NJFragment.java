@@ -1,15 +1,9 @@
 package com.nj.jpfruits;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import androidx.fragment.app.Fragment;
 
@@ -18,7 +12,6 @@ import java.util.concurrent.Executors;
 
 public abstract class NJFragment extends Fragment {
     private static final String TAG="JPFruits:NJFragment";
-    protected ExecutorService executor;
     protected int layout_id;
 
     protected Handler uiThread = new Handler(Looper.getMainLooper());

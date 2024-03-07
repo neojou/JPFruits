@@ -7,11 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -40,7 +39,6 @@ public class FragmentMain extends NJFragment
     boolean isAnswered;
 
 
-
     public FragmentMain(FragmentManager fm)
     {
         super(R.layout.fragment_main);
@@ -49,14 +47,20 @@ public class FragmentMain extends NJFragment
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater,
+            @NonNull LayoutInflater inflater,
             ViewGroup container,
             Bundle savedInstanceState
     ) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
         setViewItemsBinding();
-        fruit_dvm = new FruitDataViewModel(getActivity().getApplication(), R.raw.fruits_data);
-        binding.setFruitDvm(fruit_dvm);
+        Activity ac = getActivity();
+        if (ac != null) {
+            fruit_dvm = new FruitDataViewModel(getActivity().getApplication(), R.raw.fruits_data);
+            binding.setFruitDvm(fruit_dvm);
+        } else {
+            Log.e(TAG, "getActivity() is null");
+            return null;
+        }
         setButtons();
 
         isStarted = false;
@@ -115,7 +119,7 @@ public class FragmentMain extends NJFragment
     }
 
     private void to_question_start() {
-        Log.d(TAG, "to_start");
+        //Log.d(TAG, "to_start");
 
         switch_to_question();
 
@@ -126,7 +130,7 @@ public class FragmentMain extends NJFragment
 
 
     private void to_check_answer() {
-        Log.d(TAG, "check_answer");
+        //Log.d(TAG, "check_answer");
 
         frag_question.check_answer();
 
@@ -136,7 +140,7 @@ public class FragmentMain extends NJFragment
 
 
     private void to_next_question() {
-        Log.d(TAG, "next_question");
+        //Log.d(TAG, "next_question");
 
         if ( frag_question.set_next_question() ) {
             isAnswered = false;
@@ -147,7 +151,7 @@ public class FragmentMain extends NJFragment
     }
 
     private void to_question_finished() {
-        Log.d(TAG, "to_question_finished");
+        //Log.d(TAG, "to_question_finished");
 
         frag_question.finish_answer();
 
@@ -156,7 +160,7 @@ public class FragmentMain extends NJFragment
     }
 
     private void return_to_main() {
-        Log.d(TAG, "return to main");
+        //Log.d(TAG, "return to main");
         isAnswered = false;
         switch_to_main_page();
     }
