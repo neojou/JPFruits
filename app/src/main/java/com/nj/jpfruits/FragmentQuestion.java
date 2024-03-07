@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -19,10 +20,8 @@ import androidx.fragment.app.Fragment;
 import com.nj.jpfruits.databinding.FragmentQuestionBinding;
 
 
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.lang.Integer;
 
 public class FragmentQuestion extends Fragment
 {
@@ -31,16 +30,13 @@ public class FragmentQuestion extends Fragment
     final private FruitDataViewModel fruit_dvm;
 
     FragmentQuestionBinding binding;
-    Question cur_question;
-    TextView question_title;
     ImageView question_image;
-    TextView question_content;
-    TextView choice_title;
+    TextView answer_result;
     RadioGroup choice_rd;
     RadioButton[] choice_rb = new RadioButton[4];
     String[] choices = new String[4];
 
-    ArrayList<Question> questions;
+    Question cur_question;
     int cur_question_id;
 
     int total_answered;
@@ -60,7 +56,7 @@ public class FragmentQuestion extends Fragment
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater,
+            @NonNull LayoutInflater inflater,
             ViewGroup container,
             Bundle savedInstanceState
     ) {
@@ -71,10 +67,8 @@ public class FragmentQuestion extends Fragment
     }
 
     private void setViewItemsBinding() {
-        question_title = binding.questionTitle;
         question_image = binding.questionImage;
-        question_content = binding.questionContent;
-        choice_title = binding.choiceTitle;
+        answer_result = binding.answerResult;
         choice_rd = binding.choices;
         choice_rb[0] = binding.choice1;
         choice_rb[1] = binding.choice2;
@@ -93,11 +87,10 @@ public class FragmentQuestion extends Fragment
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         set_next_question();
     }
-
 
     public void check_answer() {
         if (cur_question == null) {
@@ -117,15 +110,17 @@ public class FragmentQuestion extends Fragment
             answer = 4;
 
         set_right_choice_button(cur_question.right_choice);
-        choice_title.setVisibility(View.VISIBLE);
+        answer_result.setVisibility(View.VISIBLE);
         if (answer != cur_question.right_choice) {
-            choice_title.setText(getString(R.string.choice_title) + " : " +
-                    getString(R.string.wrong));
+            String str = getString(R.string.choice_title) + " : " +
+                    getString(R.string.wrong);
+            answer_result.setText(str);
             set_wrong_choice_button(answer);
             stats_add_if_answered_correct(false);
         } else {
-            choice_title.setText(getString(R.string.choice_title) + " : " +
-                    getString(R.string.correct));
+            String str = getString(R.string.choice_title) + " : " +
+                    getString(R.string.correct);
+            answer_result.setText(str);
             stats_add_if_answered_correct(true);
         }
     }
@@ -153,7 +148,7 @@ public class FragmentQuestion extends Fragment
             return null;
         }
         Collections.shuffle(fruit_array_temp);
-        fruit_array_temp = new ArrayList<String>(fruit_array_temp.subList(0, 5));
+        fruit_array_temp = new ArrayList<>(fruit_array_temp.subList(0, 5));
         int correct_answer = (int)(Math.random()*(4-1+1) + 1);
         String[] choice_str = new String[4];
         int other_answer_id = 0;
@@ -199,9 +194,6 @@ public class FragmentQuestion extends Fragment
         }
         //Log.d(TAG, "set_question_to_view");
 
-        question_title.setVisibility(View.INVISIBLE);
-        //question_title.setText(q.img_filename);
-
         // question_image
         Activity activity = getActivity();
         if (activity == null) {
@@ -213,8 +205,7 @@ public class FragmentQuestion extends Fragment
         question_image.setScaleType(ImageView.ScaleType.FIT_XY);
         question_image.setVisibility(View.VISIBLE);
 
-        question_content.setVisibility(View.INVISIBLE);
-        choice_title.setVisibility(View.INVISIBLE);
+        answer_result.setVisibility(View.INVISIBLE);
         choice_rd.setVisibility(View.VISIBLE);
         choices[0] = q.choice1;
         choices[1] = q.choice2;
@@ -254,19 +245,6 @@ public class FragmentQuestion extends Fragment
         set_radio_button_color(choice_rb[id], R.color.fuchsia);
     }
 
-    private void set_screen_without_question() {
-        question_content.setVisibility(View.INVISIBLE);
-        choice_title.setVisibility(View.INVISIBLE);
-        choice_rd.setVisibility(View.INVISIBLE);
-    }
-
-    private void set_screen_with_question() {
-        question_content.setVisibility(View.VISIBLE);
-        question_content.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-        choice_title.setVisibility(View.VISIBLE);
-        choice_rd.setVisibility(View.VISIBLE);
-    }
-
     private void stats_set_start() {
         total_answered = 0;
         correct_answered = 0;
@@ -282,25 +260,18 @@ public class FragmentQuestion extends Fragment
     }
 
     private void stats_show() {
-        question_title.setVisibility(View.INVISIBLE);
         question_image.setVisibility(View.INVISIBLE);
-        question_content.setVisibility(View.VISIBLE);
-        question_content.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        choice_title.setVisibility(View.VISIBLE);
+        answer_result.setVisibility(View.VISIBLE);
+        answer_result.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         choice_rd.setVisibility(View.INVISIBLE);
-
-        //Log.d(TAG, "Total answered =" + Integer.toString(total_answered));
-        //Log.d(TAG, "Correct answers =" + Integer.toString(correct_answered));
-        //Log.d(TAG, "Wrong answers =" + Integer.toString(wrong_answered));
 
         int rate = 0;
         if (total_answered != 0)
             rate = correct_answered * 100 / total_answered;
-        //Log.d(TAG, "correct rate: " + Integer.toString(rate) +"%");
 
         String contentStr = getString(R.string.stats_total_str, total_answered) + "\n\n";
-        contentStr += getString(R.string.stats_each_str, correct_answered, wrong_answered);
-        question_content.setText(contentStr);
-        choice_title.setText(getString(R.string.stats_rate_str, rate));
+        contentStr += getString(R.string.stats_each_str, correct_answered, wrong_answered) + "\n\n";
+        contentStr += getString(R.string.stats_rate_str, rate);
+        answer_result.setText(contentStr);
     }
 }

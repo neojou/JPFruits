@@ -3,16 +3,10 @@ package com.nj.jpfruits;
 import android.app.Application;
 import android.util.Log;
 
-import androidx.databinding.ObservableBoolean;
-
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutorService;
 
 
 public class FruitDataViewModel {
@@ -65,14 +59,13 @@ public class FruitDataViewModel {
     public ArrayList<String> copy_jpfruits_array() {
         if (!is_loaded) return null;
         if (jpfruits_array == null) return null;
-        return (ArrayList<String>)jpfruits_array.clone();
+        return new ArrayList<> (jpfruits_array);
     }
 
     public void load_data() {
         if (is_loaded) return;
 
         InputStream is;
-        Log.d(TAG, "load_data()");
 
         /* questions.txt */
         is = app.getResources().openRawResource(fruits_file_id);

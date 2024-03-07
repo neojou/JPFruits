@@ -9,6 +9,6 @@
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
         android:src="@drawable/fruits"
-        android:contentDescription="Fruits" />
+        android:contentDescription="@string/img_content_name" />
 
 </FrameLayout>

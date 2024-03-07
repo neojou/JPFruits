@@ -27,9 +27,9 @@
             android:id="@+id/layout_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@+id/screen_flow_main">
+            tools:ignore="MissingConstraints">
 
             <Button
                 android:id="@+id/button_start"
@@ -41,7 +41,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/button_answer"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="MissingConstraints" />
 
             <Button
                 android:id="@+id/button_answer"
@@ -52,7 +53,8 @@
                 android:backgroundTint="@color/button_background_color"
                 app:layout_constraintEnd_toStartOf="@+id/button_next"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/button_start" />
+                app:layout_constraintStart_toEndOf="@+id/button_start"
+                tools:ignore="MissingConstraints" />
 
             <Button
                 android:id="@+id/button_next"
@@ -63,7 +65,8 @@
                 android:backgroundTint="@color/button_background_color"
                 app:layout_constraintEnd_toStartOf="@+id/button_finished"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/button_answer" />
+                app:layout_constraintStart_toEndOf="@+id/button_answer"
+                tools:ignore="MissingConstraints" />
 
             <Button
                 android:id="@+id/button_finished"
@@ -74,7 +77,8 @@
                 android:backgroundTint="@color/button_background_color"
                 app:layout_constraintEnd_toStartOf="@+id/button_return"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/button_next" />
+                app:layout_constraintStart_toEndOf="@+id/button_next"
+                tools:ignore="MissingConstraints" />
 
             <Button
                 android:id="@+id/button_return"
@@ -85,16 +89,27 @@
                 android:backgroundTint="@color/button_background_color"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/button_finished" />
+                app:layout_constraintStart_toEndOf="@+id/button_finished"
+                tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/bottom_line"
+            android:layout_width="32sp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAlignment="center"
+            android:textSize="32sp"
+            app:layout_constraintBottom_toBottomOf="@+id/screen_flow_main"
+            tools:ignore="MissingConstraints" />
 
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/screen_flow_main"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:constraint_referenced_ids="fragment_main, layout_buttons"
+            app:constraint_referenced_ids="fragment_main, layout_buttons, bottom_line"
             app:flow_horizontalAlign="center"
             app:flow_verticalAlign="bottom"
             app:flow_verticalStyle="spread"
