@@ -1,10 +1,10 @@
 package com.nj.jpfruits;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import java.util.concurrent.ExecutorService;
@@ -14,11 +14,6 @@ public abstract class NJFragment extends Fragment {
     private static final String TAG="JPFruits:NJFragment";
     protected int layout_id;
 
-    protected Handler uiThread = new Handler(Looper.getMainLooper());
-    protected void doOnUiCode(Runnable ui_code) {
-        uiThread.post(ui_code);
-    }
-
     public NJFragment(int layout_id)
     {
         super(layout_id);
@@ -27,11 +22,12 @@ public abstract class NJFragment extends Fragment {
 
     abstract protected void async_func();
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(() -> async_func());
+        executor.submit(this::async_func);
         executor.shutdown();
+        Log.d(TAG, "onViewCreated() is finished");
     }
 
     @Override

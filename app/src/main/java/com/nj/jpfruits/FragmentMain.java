@@ -16,15 +16,14 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.nj.jpfruits.databinding.FragmentMainBinding;
 
+
 public class FragmentMain extends NJFragment
         implements View.OnClickListener {
     private static final String TAG="JPFruits:FragmentMain";
-    final private FragmentManager fragment_manager;
 
     FruitDataViewModel fruit_dvm;
 
     FragmentMainBinding binding;
-    FragmentTransaction ft;
     FragmentQuestion frag_question;
     FragmentImage frag_image;
     ConstraintLayout window_layout;
@@ -38,11 +37,12 @@ public class FragmentMain extends NJFragment
     boolean isFinished;
     boolean isAnswered;
 
+    FragmentManager fragment_manager;
 
     public FragmentMain(FragmentManager fm)
     {
         super(R.layout.fragment_main);
-        fragment_manager = fm;
+        this.fragment_manager = fm;
     }
 
     @Override
@@ -55,7 +55,7 @@ public class FragmentMain extends NJFragment
         setViewItemsBinding();
         Activity ac = getActivity();
         if (ac != null) {
-            fruit_dvm = new FruitDataViewModel(getActivity().getApplication(), R.raw.fruits_data);
+            fruit_dvm = new FruitDataViewModel(ac.getApplication(), R.raw.fruits_data);
             binding.setFruitDvm(fruit_dvm);
         } else {
             Log.e(TAG, "getActivity() is null");
@@ -175,42 +175,25 @@ public class FragmentMain extends NJFragment
         set_buttons_to_question();
     }
 
-    private void ft_clean_all_first() {
-        if (frag_question != null) {
-            if (frag_question.isAdded())
-                ft.remove(frag_question);
-            frag_question = null;
-        }
-        if (frag_image != null) {
-            if (frag_image.isAdded())
-                ft.remove(frag_image);
-            frag_image = null;
-        }
-    }
-
     private void ft_switch_to_main() {
-        if (fragment_manager == null) {
-            Log.e(TAG, "fragment_manager is null");
-            return;
-        }
+        FragmentTransaction ft;
         ft = fragment_manager.beginTransaction();
 
-        ft_clean_all_first();
+        //ft_clean_all_first(ft);
         frag_image = new FragmentImage();
-        ft.add(R.id.fragment_main, frag_image);
+        ft.replace(R.id.fragment_main, frag_image);
+        ft.setReorderingAllowed(true);
         ft.commit();
     }
 
     private void ft_switch_to_question() {
-        if (fragment_manager == null) {
-            Log.e(TAG, "fragment_manager is null");
-            return;
-        }
+        FragmentTransaction ft;
         ft = fragment_manager.beginTransaction();
 
-        ft_clean_all_first();
+        //ft_clean_all_first(ft);
         frag_question = new FragmentQuestion(fruit_dvm);
-        ft.add(R.id.fragment_main, frag_question);
+        ft.replace(R.id.fragment_main, frag_question);
+        ft.setReorderingAllowed(true);
         ft.commit();
     }
 

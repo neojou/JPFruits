@@ -77,6 +77,12 @@ public class FruitDataViewModel {
         }
         fp.close();
 
+        int item_nums = fruits_name_array.size();
+        if (item_nums < 5) {
+            Log.e(TAG, "load_data() read from file error: nums=" + item_nums + " less than 5");
+            return;
+        }
+
         //FruitName.log_dump(fa);
 
         fruits_array = new ArrayList<>();

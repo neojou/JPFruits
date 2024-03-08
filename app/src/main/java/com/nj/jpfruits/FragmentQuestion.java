@@ -48,7 +48,6 @@ public class FragmentQuestion extends Fragment
         super(R.layout.fragment_question);
 
         fruit_dvm = dvm;
-        //setup_questions();
         cur_question_id = 0;
         fruit_dvm.shuffle();
         stats_set_start();

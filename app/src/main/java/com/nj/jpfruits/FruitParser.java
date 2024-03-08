@@ -2,18 +2,12 @@ package com.nj.jpfruits;
 
 import android.util.Log;
 
-import java.io.BufferedReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FruitParser extends JParser {
     private static final String TAG="JPFruit:FruitParser";
-    InputStream is;
-    InputStreamReader is_reader = null;
-    BufferedReader br = null;
-
 
     public FruitParser(InputStream is) {
         super(is);
@@ -42,7 +36,7 @@ public class FruitParser extends JParser {
                 return null;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "getFruitName() parsing failed");
             return null;
         }
 

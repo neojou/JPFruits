@@ -2,10 +2,7 @@ package com.nj.jpfruits;
 
 import android.util.Log;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class FruitName {
     private static final String TAG="JPFruits:FruitName";

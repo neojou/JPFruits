@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.regex.Matcher;
 
 public class JParser {
     private static final String TAG="JPFruit:JParser";
@@ -23,7 +22,7 @@ public class JParser {
             is_reader = new InputStreamReader(is, StandardCharsets.UTF_8);
             br = new BufferedReader(is_reader);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "JParser() failed");
         }
     }
 
@@ -35,7 +34,6 @@ public class JParser {
                 //Log.v(TAG, "line="+line);
                 line = line.trim();
                 if (line.isEmpty()) continue;
-                if (line.isBlank()) continue;
                 if (line.startsWith("//")) continue;
                 if (line.startsWith("/*")) {
                     isCommented = true;
@@ -50,7 +48,7 @@ public class JParser {
                 break;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "readLine() failed");
         }
 
         return line;
@@ -65,7 +63,7 @@ public class JParser {
             if (is != null)
                 is.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "close() failed");
         }
     }
 }
