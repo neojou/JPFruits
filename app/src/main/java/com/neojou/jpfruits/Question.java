@@ -1,13 +1,13 @@
 package com.neojou.jpfruits;
 
 public class Question {
-    public String img_filename;
-    public String choice1;
-    public String choice2;
-    public String choice3;
-    public String choice4;
+    final public String img_filename;
+    final public String choice1;
+    final public String choice2;
+    final public String choice3;
+    final public String choice4;
 
-    public int right_choice;
+    final public int right_choice;
 
     public Question(String filename, String choice1, String choice2, String choice3, String choice4, int correct_answer) {
         this.img_filename = filename;

@@ -36,7 +36,7 @@ public class FruitParser extends JParser {
                 return null;
             }
         } catch (Exception e) {
-            Log.e(TAG, "getFruitName() parsing fail excpetion: " + e);
+            Log.e(TAG, "getFruitName() parsing fail exception: " + e);
             return null;
         }
 

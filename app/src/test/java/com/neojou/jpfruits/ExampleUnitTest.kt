@@ -1,4 +1,4 @@
-package com.nj.jpfruits
+package com.neojou.jpfruits
 
 import org.junit.Test
 

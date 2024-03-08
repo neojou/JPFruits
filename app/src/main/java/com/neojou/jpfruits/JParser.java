@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 public class JParser {
     private static final String TAG="JPFruit:JParser";
 
-    protected InputStream is;
+    final protected InputStream is;
     protected InputStreamReader is_reader = null;
     protected BufferedReader br = null;
 

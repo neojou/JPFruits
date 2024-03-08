@@ -12,12 +12,10 @@ import java.util.concurrent.Executors;
 
 public abstract class NJFragment extends Fragment {
     private static final String TAG="JPFruits:NJFragment";
-    protected int layout_id;
 
     public NJFragment(int layout_id)
     {
         super(layout_id);
-        this.layout_id = layout_id;
     }
 
     abstract protected void async_func();
@@ -28,15 +26,5 @@ public abstract class NJFragment extends Fragment {
         executor.submit(this::async_func);
         executor.shutdown();
         Log.d(TAG, "onViewCreated() is finished");
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
     }
 }

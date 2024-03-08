@@ -1,4 +1,4 @@
-package com.nj.jpfruits.ui.theme
+package com.neojou.jpfruits.ui.theme
 
 import android.app.Activity
 import android.os.Build

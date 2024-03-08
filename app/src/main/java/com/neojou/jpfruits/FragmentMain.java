@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -26,18 +25,15 @@ public class FragmentMain extends NJFragment
     FragmentMainBinding binding;
     FragmentQuestion frag_question;
     FragmentImage frag_image;
-    ConstraintLayout window_layout;
     Button button_start;
     Button button_answer;
     Button button_next;
     Button button_finished;
     Button button_return;
 
-    boolean isStarted;
-    boolean isFinished;
     boolean isAnswered;
 
-    FragmentManager fragment_manager;
+    final FragmentManager fragment_manager;
 
     public FragmentMain(FragmentManager fm)
     {
@@ -55,7 +51,7 @@ public class FragmentMain extends NJFragment
         setViewItemsBinding();
         Activity ac = getActivity();
         if (ac != null) {
-            fruit_dvm = new FruitDataViewModel(ac.getApplication(), R.raw.fruits_data);
+            fruit_dvm = new FruitDataViewModel(ac.getApplication());
             binding.setFruitDvm(fruit_dvm);
         } else {
             Log.e(TAG, "getActivity() is null");
@@ -63,15 +59,12 @@ public class FragmentMain extends NJFragment
         }
         setButtons();
 
-        isStarted = false;
-        isFinished = false;
         isAnswered = false;
 
         return binding.getRoot();
     }
 
     private void setViewItemsBinding() {
-        window_layout = binding.windowLayout;
         button_start = binding.buttonStart;
         button_answer = binding.buttonAnswer;
         button_next = binding.buttonNext;
@@ -123,8 +116,6 @@ public class FragmentMain extends NJFragment
 
         switch_to_question();
 
-        isStarted = true;
-        isFinished = false;
         isAnswered = false;
     }
 
@@ -155,7 +146,6 @@ public class FragmentMain extends NJFragment
 
         frag_question.finish_answer();
 
-        isFinished = true;
         set_buttons_to_return_only();
     }
 

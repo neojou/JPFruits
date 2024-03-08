@@ -1,4 +1,4 @@
-package com.nj.jpfruits
+package com.neojou.jpfruits
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

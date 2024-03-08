@@ -2,7 +2,7 @@
 <layout xmlns:tools="http://schemas.android.com/tools"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:background="@color/beige"
+    android:background="@color/beige"
     >
 
     <data>
@@ -30,7 +30,8 @@
             android:layout_height="wrap_content"
 
             android:orientation="horizontal"
-            tools:ignore="MissingConstraints">
+            tools:ignore="MissingConstraints"
+            >
 
             <Button
                 android:id="@+id/button_start"
@@ -103,7 +104,8 @@
             android:textAlignment="center"
             android:textSize="32sp"
             app:layout_constraintBottom_toBottomOf="@+id/screen_flow_main"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+             />
 
         <androidx.constraintlayout.helper.widget.Flow
             android:id="@+id/screen_flow_main"

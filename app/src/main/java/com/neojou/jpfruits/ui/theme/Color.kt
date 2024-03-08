@@ -1,4 +1,4 @@
-package com.nj.jpfruits.ui.theme
+package com.neojou.jpfruits.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

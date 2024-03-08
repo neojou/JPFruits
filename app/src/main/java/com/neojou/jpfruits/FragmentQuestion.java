@@ -33,8 +33,8 @@ public class FragmentQuestion extends Fragment
     ImageView question_image;
     TextView answer_result;
     RadioGroup choice_rd;
-    RadioButton[] choice_rb = new RadioButton[4];
-    String[] choices = new String[4];
+    final RadioButton[] choice_rb = new RadioButton[4];
+    final String[] choices = new String[4];
 
     Question cur_question;
     int cur_question_id;

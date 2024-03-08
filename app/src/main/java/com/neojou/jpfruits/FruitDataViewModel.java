@@ -12,8 +12,7 @@ import java.util.HashMap;
 public class FruitDataViewModel {
     private static final String TAG="JPFruits:FruitDataViewModel";
 
-    Application app;
-    int fruits_file_id;
+    final Application app;
 
     boolean is_loaded;
     ArrayList<String> fruits_array;
@@ -23,9 +22,8 @@ public class FruitDataViewModel {
 
 
 
-    public FruitDataViewModel(Application application, int fid) {
+    public FruitDataViewModel(Application application) {
         app = application;
-        fruits_file_id = fid;
         is_loaded = false;
         fruits_array = null;
         jpfruits_array = null;
@@ -68,7 +66,7 @@ public class FruitDataViewModel {
         InputStream is;
 
         /* questions.txt */
-        is = app.getResources().openRawResource(fruits_file_id);
+        is = app.getResources().openRawResource(R.raw.fruits_data);
         FruitParser fp = new FruitParser(is);
         ArrayList<FruitName> fruits_name_array = new ArrayList<>();
         FruitName fn;

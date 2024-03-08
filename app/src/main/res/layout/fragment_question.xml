@@ -47,7 +47,8 @@
             android:layout_marginEnd="10dp"
             android:orientation="vertical"
             app:layout_constraintStart_toEndOf="@+id/answer_result"
-            tools:ignore="MissingConstraints">
+            tools:ignore="MissingConstraints"
+            >
 
             <RadioButton
                 android:id="@+id/choice1"
