@@ -9,7 +9,7 @@
         <import type="android.view.View"/>
         <variable
             name="fruit_dvm"
-            type="com.nj.jpfruits.FruitDataViewModel" />
+            type="com.neojou.jpfruits.FruitDataViewModel" />
     </data>
 
 

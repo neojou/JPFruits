@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.nj.jpfruits"
+    namespace = "com.neojou.jpfruits"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.nj.jpfruits"
+        applicationId = "com.neojou.jpfruits"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
