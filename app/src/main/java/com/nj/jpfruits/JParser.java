@@ -22,7 +22,7 @@ public class JParser {
             is_reader = new InputStreamReader(is, StandardCharsets.UTF_8);
             br = new BufferedReader(is_reader);
         } catch (Exception e) {
-            Log.e(TAG, "JParser() failed");
+            Log.e(TAG, "JParser() failed Exception" + e);
         }
     }
 
@@ -48,7 +48,7 @@ public class JParser {
                 break;
             }
         } catch (Exception e) {
-            Log.e(TAG, "readLine() failed");
+            Log.e(TAG, "readLine() failed Exception" + e);
         }
 
         return line;
