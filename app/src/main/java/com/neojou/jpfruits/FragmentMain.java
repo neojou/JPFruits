@@ -16,9 +16,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.neojou.jpfruits.databinding.FragmentMainBinding;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 
 public class FragmentMain extends Fragment
         implements View.OnClickListener {
@@ -34,6 +31,9 @@ public class FragmentMain extends Fragment
     Button button_return;
 
     boolean isAnswered;
+
+    int fragmain_screen_width;
+    int fragmain_screen_height;
 
     public FragmentMain()
     {
@@ -65,6 +65,7 @@ public class FragmentMain extends Fragment
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         switch_to_main_page();
     }
 

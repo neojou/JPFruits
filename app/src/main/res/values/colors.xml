@@ -11,7 +11,7 @@
     <color name="fuchsia">#FF00FF</color>
     <color name="gray">#808080</color>
     <color name="beige">#FDEECD</color>
-    <color name="button_background_color">#0279C2</color>
+    <color name="button_background_color">#0c72b0</color>
     <color name="button_text_color">#FFFFFF</color>
     <color name="radio_color">#249824</color>
 </resources>

@@ -215,16 +215,17 @@ public class FragmentQuestion extends Fragment
         question_image.setScaleType(ImageView.ScaleType.FIT_XY);
         question_image.setVisibility(View.VISIBLE);
 
-        answer_result.setVisibility(View.INVISIBLE);
+        answer_result.setVisibility(View.VISIBLE);
+        answer_result.setText("Your choice is ");
         choice_rd.setVisibility(View.VISIBLE);
         choices[0] = q.choice1;
         choices[1] = q.choice2;
         choices[2] = q.choice3;
         choices[3] = q.choice4;
-        choice_rb[0].setText(choices[0]);
-        choice_rb[1].setText(choices[1]);
-        choice_rb[2].setText(choices[2]);
-        choice_rb[3].setText(choices[3]);
+        choice_rb[0].setText("1. " + choices[0]);
+        choice_rb[1].setText("2. " + choices[1]);
+        choice_rb[2].setText("3. " + choices[2]);
+        choice_rb[3].setText("4. " + choices[3]);
         set_radio_button_color(choice_rb[0], R.color.gray);
         set_radio_button_color(choice_rb[1], R.color.gray);
         set_radio_button_color(choice_rb[2], R.color.gray);
