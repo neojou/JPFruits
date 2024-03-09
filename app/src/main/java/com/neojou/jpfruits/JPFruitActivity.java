@@ -14,7 +14,11 @@ public class JPFruitActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bindingViewItems();
-        ft_start();
+        if (savedInstanceState == null) {
+            // initial do once data
+            FragmentQuestion.init_fruit_dvm(this.getApplication());
+            ft_start();
+        }
     }
 
     private void bindingViewItems() {
@@ -22,8 +26,9 @@ public class JPFruitActivity extends AppCompatActivity {
     }
 
     private void ft_start() {
+        // fragment settings
         fragment_manager = getSupportFragmentManager();
-        FragmentMain frag_main = new FragmentMain(fragment_manager);
+        FragmentMain frag_main = new FragmentMain();
 
         FragmentTransaction ft;
         ft = fragment_manager.beginTransaction();

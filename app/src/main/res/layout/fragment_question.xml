@@ -4,13 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/beige">
 
-    <data>
-        <import type="android.view.View"/>
-        <variable
-            name="fruit_dvm"
-            type="com.neojou.jpfruits.FruitDataViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/fragment_question"
         android:layout_width="match_parent"

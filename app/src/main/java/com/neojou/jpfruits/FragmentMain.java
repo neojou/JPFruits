@@ -1,6 +1,5 @@
 package com.neojou.jpfruits;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,17 +9,20 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.neojou.jpfruits.databinding.FragmentMainBinding;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-public class FragmentMain extends NJFragment
+
+public class FragmentMain extends Fragment
         implements View.OnClickListener {
     private static final String TAG="JPFruits:FragmentMain";
-
-    FruitDataViewModel fruit_dvm;
 
     FragmentMainBinding binding;
     FragmentQuestion frag_question;
@@ -33,12 +35,9 @@ public class FragmentMain extends NJFragment
 
     boolean isAnswered;
 
-    final FragmentManager fragment_manager;
-
-    public FragmentMain(FragmentManager fm)
+    public FragmentMain()
     {
         super(R.layout.fragment_main);
-        this.fragment_manager = fm;
     }
 
     @Override
@@ -49,14 +48,6 @@ public class FragmentMain extends NJFragment
     ) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
         setViewItemsBinding();
-        Activity ac = getActivity();
-        if (ac != null) {
-            fruit_dvm = new FruitDataViewModel(ac.getApplication());
-            binding.setFruitDvm(fruit_dvm);
-        } else {
-            Log.e(TAG, "getActivity() is null");
-            return null;
-        }
         setButtons();
 
         isAnswered = false;
@@ -72,16 +63,15 @@ public class FragmentMain extends NJFragment
         button_return = binding.buttonReturn;
     }
 
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        switch_to_main_page();
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
-
-    protected void async_func() {
-        fruit_dvm.load_data();
-        switch_to_main_page();
     }
 
     private void setButtons() {
@@ -112,17 +102,12 @@ public class FragmentMain extends NJFragment
     }
 
     private void to_question_start() {
-        //Log.d(TAG, "to_start");
-
         switch_to_question();
-
         isAnswered = false;
     }
 
 
     private void to_check_answer() {
-        //Log.d(TAG, "check_answer");
-
         frag_question.check_answer();
 
         isAnswered = true;
@@ -166,10 +151,17 @@ public class FragmentMain extends NJFragment
     }
 
     private void ft_switch_to_main() {
+        FragmentManager fragment_manager;
+        FragmentActivity ac = getActivity();
+        if (ac != null) {
+             fragment_manager = ac.getSupportFragmentManager();
+        } else {
+            Log.e(TAG, "ft_switch_to_main(): getActivity() is null");
+            return;
+        }
         FragmentTransaction ft;
         ft = fragment_manager.beginTransaction();
 
-        //ft_clean_all_first(ft);
         frag_image = new FragmentImage();
         ft.replace(R.id.fragment_main, frag_image);
         ft.setReorderingAllowed(true);
@@ -177,11 +169,20 @@ public class FragmentMain extends NJFragment
     }
 
     private void ft_switch_to_question() {
+        FragmentManager fragment_manager;
+        FragmentActivity ac = getActivity();
+        if (ac != null) {
+            fragment_manager = ac.getSupportFragmentManager();
+        } else {
+            Log.e(TAG, "ft_switch_to_question(): getActivity() is null");
+            return;
+        }
+
         FragmentTransaction ft;
         ft = fragment_manager.beginTransaction();
 
-        //ft_clean_all_first(ft);
-        frag_question = new FragmentQuestion(fruit_dvm);
+        frag_question = new FragmentQuestion();
+        frag_question.init_data();
         ft.replace(R.id.fragment_main, frag_question);
         ft.setReorderingAllowed(true);
         ft.commit();

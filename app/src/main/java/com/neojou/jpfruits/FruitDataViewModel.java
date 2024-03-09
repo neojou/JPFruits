@@ -29,6 +29,47 @@ public class FruitDataViewModel {
         jpfruits_array = null;
         eng_to_jp_name_map = null;
         jp_to_eng_name_map = null;
+
+        load_data();
+    }
+
+    private void load_data() {
+        if (is_loaded) return;
+
+        InputStream is;
+
+        /* questions.txt */
+        is = app.getResources().openRawResource(R.raw.fruits_data);
+        FruitParser fp = new FruitParser(is);
+        ArrayList<FruitName> fruits_name_array = new ArrayList<>();
+        FruitName fn;
+        while ((fn = fp.getFruitName()) != null) {
+            fruits_name_array.add(fn);
+        }
+        fp.close();
+
+        int item_nums = fruits_name_array.size();
+        if (item_nums < 5) {
+            Log.e(TAG, "load_data() read from file error: nums=" + item_nums + " less than 5");
+            return;
+        }
+
+        //FruitName.log_dump(fruits_name_array);
+
+        fruits_array = new ArrayList<>();
+        jpfruits_array = new ArrayList<>();
+        eng_to_jp_name_map = new HashMap<>();
+        jp_to_eng_name_map = new HashMap<>();
+
+        for (int i = 0; i < fruits_name_array.size(); i++) {
+            fn = fruits_name_array.get(i);
+            fruits_array.add(fn.eng_name);
+            jpfruits_array.add(fn.jp_name);
+            eng_to_jp_name_map.put(fn.eng_name, fn.jp_name);
+            jp_to_eng_name_map.put(fn.jp_name, fn.eng_name);
+        }
+
+        is_loaded = true;
     }
 
     public int get_fruit_array_size() {
@@ -60,42 +101,4 @@ public class FruitDataViewModel {
         return new ArrayList<> (jpfruits_array);
     }
 
-    public void load_data() {
-        if (is_loaded) return;
-
-        InputStream is;
-
-        /* questions.txt */
-        is = app.getResources().openRawResource(R.raw.fruits_data);
-        FruitParser fp = new FruitParser(is);
-        ArrayList<FruitName> fruits_name_array = new ArrayList<>();
-        FruitName fn;
-        while ((fn = fp.getFruitName()) != null) {
-            fruits_name_array.add(fn);
-        }
-        fp.close();
-
-        int item_nums = fruits_name_array.size();
-        if (item_nums < 5) {
-            Log.e(TAG, "load_data() read from file error: nums=" + item_nums + " less than 5");
-            return;
-        }
-
-        //FruitName.log_dump(fa);
-
-        fruits_array = new ArrayList<>();
-        jpfruits_array = new ArrayList<>();
-        eng_to_jp_name_map = new HashMap<>();
-        jp_to_eng_name_map = new HashMap<>();
-
-        for (int i = 0; i < fruits_name_array.size(); i++) {
-            fn = fruits_name_array.get(i);
-            fruits_array.add(fn.eng_name);
-            jpfruits_array.add(fn.jp_name);
-            eng_to_jp_name_map.put(fn.eng_name, fn.jp_name);
-            jp_to_eng_name_map.put(fn.jp_name, fn.eng_name);
-        }
-
-        is_loaded = true;
-    }
 }

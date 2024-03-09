@@ -1,6 +1,7 @@
 package com.neojou.jpfruits;
 
 import android.app.Activity;
+import android.app.Application;
 import android.os.Bundle;
 import android.content.Context;
 import android.util.Log;
@@ -27,7 +28,7 @@ public class FragmentQuestion extends Fragment
 {
     private static final String TAG="JPFruits:FragmentQuestion";
 
-    final private FruitDataViewModel fruit_dvm;
+    private static FruitDataViewModel fruit_dvm = null;
 
     FragmentQuestionBinding binding;
     ImageView question_image;
@@ -43,14 +44,25 @@ public class FragmentQuestion extends Fragment
     int correct_answered;
     int wrong_answered;
 
-    public FragmentQuestion(FruitDataViewModel dvm)
+    public FragmentQuestion()
     {
         super(R.layout.fragment_question);
+    }
 
-        fruit_dvm = dvm;
-        cur_question_id = 0;
+    public void init_data() {
+        if (fruit_dvm == null) {
+            Log.e(TAG, "init_data(): fruit_dvm is null");
+            return;
+        }
         fruit_dvm.shuffle();
+        cur_question_id = 0;
         stats_set_start();
+    }
+
+    public static void init_fruit_dvm(Application app) {
+        if (fruit_dvm == null) {
+            fruit_dvm = new FruitDataViewModel(app);
+        }
     }
 
     @Override
@@ -61,7 +73,6 @@ public class FragmentQuestion extends Fragment
     ) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_question, container, false);
         setViewItemsBinding();
-        binding.setFruitDvm(fruit_dvm);
         return binding.getRoot();
     }
 

@@ -1,0 +1,4 @@
+Version Code	Version Name	Description
+-------------------------------------------
+1		1.0		2024.3.8 on Google App Console for internal test2		1.01		Support Android 9 / Fix critical bug
+
