@@ -14,4 +14,6 @@
     <color name="button_background_color">#0c72b0</color>
     <color name="button_text_color">#FFFFFF</color>
     <color name="radio_color">#249824</color>
+    <color name="radio_correct_color">#0000CC</color>
+    <color name="radio_wrong_color">#a60ad1</color>
 </resources>

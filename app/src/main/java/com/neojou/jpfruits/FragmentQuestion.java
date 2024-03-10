@@ -5,6 +5,8 @@ import android.app.Application;
 import android.os.Bundle;
 import android.content.Context;
 import android.util.Log;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 
 import com.neojou.jpfruits.databinding.FragmentQuestionBinding;
 
@@ -24,7 +25,7 @@ import com.neojou.jpfruits.databinding.FragmentQuestionBinding;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class FragmentQuestion extends Fragment
+public class FragmentQuestion extends NJFragment
 {
     private static final String TAG="JPFruits:FragmentQuestion";
 
@@ -32,10 +33,13 @@ public class FragmentQuestion extends Fragment
 
     FragmentQuestionBinding binding;
     ImageView question_image;
-    TextView answer_result;
+    TextView answer_result_line1;
+    TextView answer_result_line2;
+    TextView answer_result_line3;
     RadioGroup choice_rd;
-    final RadioButton[] choice_rb = new RadioButton[4];
-    final String[] choices = new String[4];
+    private static final int total_choice_num = 3;
+    final RadioButton[] choice_rb = new RadioButton[total_choice_num];
+    final String[] choices = new String[total_choice_num];
 
     Question cur_question;
     int cur_question_id;
@@ -44,10 +48,6 @@ public class FragmentQuestion extends Fragment
     int correct_answered;
     int wrong_answered;
 
-    public FragmentQuestion()
-    {
-        super(R.layout.fragment_question);
-    }
 
     public void init_data() {
         if (fruit_dvm == null) {
@@ -78,12 +78,13 @@ public class FragmentQuestion extends Fragment
 
     private void setViewItemsBinding() {
         question_image = binding.questionImage;
-        answer_result = binding.answerResult;
+        answer_result_line1 = binding.answerResultLine1;
+        answer_result_line2 = binding.answerResultLine2;
+        answer_result_line3 = binding.answerResultLine3;
         choice_rd = binding.choices;
         choice_rb[0] = binding.choice1;
         choice_rb[1] = binding.choice2;
         choice_rb[2] = binding.choice3;
-        choice_rb[3] = binding.choice4;
     }
 
     @Override
@@ -99,12 +100,13 @@ public class FragmentQuestion extends Fragment
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         set_next_question();
     }
 
     public void check_answer() {
         if (cur_question == null) {
-            Log.e(TAG, "cur_question is null");
+            Log.e(TAG, "check_answer(): cur_question is null");
             return;
         }
 
@@ -116,23 +118,25 @@ public class FragmentQuestion extends Fragment
             answer = 2;
         else if (id == R.id.choice3)
             answer = 3;
-        else if (id == R.id.choice4)
-            answer = 4;
+
+        if (answer == 0) {
+            Log.e(TAG, "check_answer(): strange no selected answer");
+            return;
+        }
 
         set_right_choice_button(cur_question.right_choice);
-        answer_result.setVisibility(View.VISIBLE);
+        answer_result_line2.setVisibility(View.VISIBLE);
         if (answer != cur_question.right_choice) {
-            String str = getString(R.string.choice_title) + " : " +
-                    getString(R.string.wrong);
-            answer_result.setText(str);
+            String str = getString(R.string.wrong);
+            answer_result_line2.setText(str);
             set_wrong_choice_button(answer);
             stats_add_if_answered_correct(false);
         } else {
-            String str = getString(R.string.choice_title) + " : " +
-                    getString(R.string.correct);
-            answer_result.setText(str);
+            String str = getString(R.string.correct);
+            answer_result_line2.setText(str);
             stats_add_if_answered_correct(true);
         }
+
     }
 
     private Question generate_question(int pos) {
@@ -152,17 +156,17 @@ public class FragmentQuestion extends Fragment
             Log.e(TAG,"generate_question(): fruit array is null");
             return null;
         }
-        if (fruit_array_temp.size() < 5) {
+        if (fruit_array_temp.size() < ( total_choice_num + 1) ) {
             Log.e(TAG,"generate_question(): fruit array size is "
-                    + fruit_array_temp.size() + "less then 5");
+                    + fruit_array_temp.size() + "less then " + (total_choice_num + 1));
             return null;
         }
         Collections.shuffle(fruit_array_temp);
-        fruit_array_temp = new ArrayList<>(fruit_array_temp.subList(0, 5));
-        int correct_answer = (int)(Math.random()*(4-1+1) + 1);
-        String[] choice_str = new String[4];
+        fruit_array_temp = new ArrayList<>(fruit_array_temp.subList(0, total_choice_num + 1));
+        int correct_answer = (int)(Math.random()*(total_choice_num-1+1) + 1);
+        String[] choice_str = new String[total_choice_num];
         int other_answer_id = 0;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < total_choice_num; i++) {
             if (i == correct_answer - 1) {
                 choice_str[i] = jp_name;
                 continue;
@@ -171,16 +175,16 @@ public class FragmentQuestion extends Fragment
                 //Log.i(TAG, "found the same in choices");
                 other_answer_id++;
             }
-            if (other_answer_id >= 5) {
+            if (other_answer_id >= (total_choice_num + 1)) {
                 Log.e(TAG,"generate_question(): other_answer_id = "
-                        + other_answer_id + ">= 5");
+                        + other_answer_id + ">= " + (total_choice_num + 1));
                 return null;
             }
             choice_str[i] = fruit_array_temp.get(other_answer_id);
             other_answer_id++;
         }
 
-        return new Question(fruit_name, choice_str[0], choice_str[1], choice_str[2], choice_str[3], correct_answer);
+        return new Question(fruit_name, choice_str[0], choice_str[1], choice_str[2], correct_answer);
     }
 
     public boolean set_next_question() {
@@ -197,6 +201,86 @@ public class FragmentQuestion extends Fragment
         stats_show();
     }
 
+
+
+
+    private void set_question_image(final DisplayMetrics dm, final Question q) {
+
+        Activity activity = getActivity();
+        if (activity == null) {
+            Log.e(TAG, "set_question_to_view() : getActivity() is null");
+            return;
+        }
+
+        int id = activity.getResources().getIdentifier(q.img_filename, "drawable", activity.getPackageName());
+
+        question_image.setImageResource(id);
+        question_image.setVisibility(View.VISIBLE);
+    }
+
+
+    private void set_answer_result_lines(final DisplayMetrics dm) {
+        int screen_width_px = dm.widthPixels;
+        int screen_height_px = dm.heightPixels;
+        final float layout_width_ratio = 0.7f;
+        final float layout_height_ratio = 0.1f;
+        final int max_alphabet_num = 10;
+        int choice_width_px = (int)((float)(screen_width_px) * layout_width_ratio / (float)(max_alphabet_num));
+        int choice_height_px = (int)((float)(screen_height_px) * layout_height_ratio);
+        int choice_px = choice_width_px;
+        if (choice_height_px < choice_px) choice_px = choice_height_px;
+        if (choice_px < 48) {
+            Log.e(TAG, "set_answer_result_lines() : choice_height_px(" + choice_height_px + ") || choice_width_px(" + choice_width_px + ") < 48");
+            return;
+        }
+        Log.d(TAG, "set_answer_result_lines() : choice_px=" + choice_px);
+
+        answer_result_line1.setTextSize(TypedValue.COMPLEX_UNIT_PX, choice_px);
+        answer_result_line2.setTextSize(TypedValue.COMPLEX_UNIT_PX, choice_px);
+        answer_result_line3.setTextSize(TypedValue.COMPLEX_UNIT_PX, choice_px);
+
+        answer_result_line1.setVisibility(View.GONE);
+        answer_result_line2.setVisibility(View.INVISIBLE);
+        answer_result_line3.setVisibility(View.GONE);
+    }
+
+    private void set_radio_button_selections(final DisplayMetrics dm, final Question q) {
+        int screen_width_px = dm.widthPixels;
+        int screen_height_px = dm.heightPixels;
+        final float layout_width_ratio = 0.7f;
+        final float layout_height_ratio = 0.4f;
+        final int max_alphabet_num = 12;
+        int choice_width_px = (int)((float)(screen_width_px) * layout_width_ratio / (float)(max_alphabet_num));
+        int choice_height_px = (int)((float)(screen_height_px) * layout_height_ratio / (float)(total_choice_num));
+        int choice_px = choice_width_px;
+        if (choice_height_px < choice_px) choice_px = choice_height_px;
+        if (choice_px < 48) {
+            Log.e(TAG, "set_radio_button_selections() : choice_height_px(" + choice_height_px + ") || choice_width_px(" + choice_width_px + ") < 48");
+            return;
+        }
+        Log.d(TAG, "set_radio_button_selections() : choice_px=" + choice_px);
+        for (int i = 0; i < total_choice_num; i++)
+            choice_rb[i].setTextSize(TypedValue.COMPLEX_UNIT_PX, choice_px);
+
+        choice_rd.setVisibility(View.VISIBLE);
+        choices[0] = q.choice1;
+        choices[1] = q.choice2;
+        choices[2] = q.choice3;
+        String contentstr = "1. " + choices[0];
+        choice_rb[0].setText(contentstr);
+        contentstr = "2. " + choices[1];
+        choice_rb[1].setText(contentstr);
+        contentstr = "3. " + choices[2];
+        choice_rb[2].setText(contentstr);
+        set_radio_button_color(choice_rb[0], R.color.gray);
+        set_radio_button_color(choice_rb[1], R.color.gray);
+        set_radio_button_color(choice_rb[2], R.color.gray);
+        choice_rb[0].setChecked(false);
+        choice_rb[1].setChecked(false);
+        choice_rb[2].setChecked(false);
+        choice_rd.clearCheck();
+    }
+
     private void set_question_to_view(Question q) {
         if (q == null) {
             Log.e(TAG, "set_question_to_view() : input Question is null");
@@ -204,37 +288,17 @@ public class FragmentQuestion extends Fragment
         }
         //Log.d(TAG, "set_question_to_view");
 
-        // question_image
-        Activity activity = getActivity();
-        if (activity == null) {
-            Log.e(TAG, "set_question_to_view() : getActivity() is null");
+        DisplayMetrics dm = get_screen_display_metrics();
+        if (dm == null) {
+            Log.e(TAG, "set_radio_button_selections() : dm is null");
             return;
         }
-        int id = activity.getResources().getIdentifier(q.img_filename, "drawable", activity.getPackageName());
-        question_image.setImageResource(id);
-        question_image.setScaleType(ImageView.ScaleType.FIT_XY);
-        question_image.setVisibility(View.VISIBLE);
 
-        answer_result.setVisibility(View.VISIBLE);
-        answer_result.setText("Your choice is ");
-        choice_rd.setVisibility(View.VISIBLE);
-        choices[0] = q.choice1;
-        choices[1] = q.choice2;
-        choices[2] = q.choice3;
-        choices[3] = q.choice4;
-        choice_rb[0].setText("1. " + choices[0]);
-        choice_rb[1].setText("2. " + choices[1]);
-        choice_rb[2].setText("3. " + choices[2]);
-        choice_rb[3].setText("4. " + choices[3]);
-        set_radio_button_color(choice_rb[0], R.color.gray);
-        set_radio_button_color(choice_rb[1], R.color.gray);
-        set_radio_button_color(choice_rb[2], R.color.gray);
-        set_radio_button_color(choice_rb[3], R.color.gray);
-        choice_rb[0].setChecked(false);
-        choice_rb[1].setChecked(false);
-        choice_rb[2].setChecked(false);
-        choice_rb[3].setChecked(false);
-        choice_rd.clearCheck();
+
+        set_question_image(dm, q);
+
+        set_answer_result_lines(dm);
+        set_radio_button_selections(dm, q);
     }
 
     private void set_radio_button_color(RadioButton rb, int color) {
@@ -245,15 +309,15 @@ public class FragmentQuestion extends Fragment
 
     private void set_right_choice_button(int which) {
         int id = which - 1;
-        if (id < 0 || id > 3) return;
-        set_radio_button_color(choice_rb[id], R.color.blue);
+        if (id < 0 || id >= total_choice_num ) return;
+        set_radio_button_color(choice_rb[id], R.color.radio_correct_color);
         choice_rb[id].setChecked(true);
     }
 
     private void set_wrong_choice_button(int which) {
         int id = which - 1;
-        if (id < 0 || id > 3) return;
-        set_radio_button_color(choice_rb[id], R.color.fuchsia);
+        if (id < 0 || id >= total_choice_num) return;
+        set_radio_button_color(choice_rb[id], R.color.radio_wrong_color);
     }
 
     private void stats_set_start() {
@@ -271,9 +335,15 @@ public class FragmentQuestion extends Fragment
     }
 
     private void stats_show() {
+
         question_image.setVisibility(View.INVISIBLE);
-        answer_result.setVisibility(View.VISIBLE);
-        answer_result.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+
+        answer_result_line1.setVisibility(View.VISIBLE);
+        answer_result_line2.setVisibility(View.VISIBLE);
+        answer_result_line3.setVisibility(View.VISIBLE);
+        answer_result_line1.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        answer_result_line2.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        answer_result_line3.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         choice_rd.setVisibility(View.INVISIBLE);
 
         int rate = 0;
@@ -281,8 +351,10 @@ public class FragmentQuestion extends Fragment
             rate = correct_answered * 100 / total_answered;
 
         String contentStr = getString(R.string.stats_total_str, total_answered) + "\n\n";
-        contentStr += getString(R.string.stats_each_str, correct_answered, wrong_answered) + "\n\n";
-        contentStr += getString(R.string.stats_rate_str, rate);
-        answer_result.setText(contentStr);
+        answer_result_line1.setText(contentStr);
+        contentStr = getString(R.string.stats_each_str, correct_answered, wrong_answered) + "\n\n";
+        answer_result_line2.setText(contentStr);
+        contentStr = getString(R.string.stats_rate_str, rate);
+        answer_result_line3.setText(contentStr);
     }
 }

@@ -1,120 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:tools="http://schemas.android.com/tools"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/beige"
-    >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/window_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/beige">
+
 
         <FrameLayout
             android:id="@+id/fragment_main"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/layout_buttons"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintHeight_percent="0.9"
+            app:layout_constraintHeight_percent="0.85"
             app:layout_constraintVertical_bias="0" >
         </FrameLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_buttons"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:orientation="horizontal"
             android:gravity="center"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintTop_toBottomOf="@id/fragment_main"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_main"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintHeight_percent="0.1"
-            app:layout_constraintVertical_bias="0" >
+            app:layout_constraintHeight_percent="0.15"
+            app:layout_constraintVertical_bias="0"
+            tools:ignore="MissingConstraints"
+            >
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/main_flow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:constraint_referenced_ids="button_start, button_answer, button_next, button_finished, button_return"
+                app:flow_horizontalStyle="spread"
+                app:flow_wrapMode="chain" />
 
             <Button
                 android:id="@+id/button_start"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:backgroundTint="@color/button_background_color"
-                android:text="@string/button_start_str"
                 android:textColor="@color/button_text_color"
-                app:layout_constraintStart_toStartOf="parent"
+                android:text="@string/button_start_str"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintEnd_toStartOf="@+id/button_answer"
-                app:layout_constraintTop_toTopOf="@+id/layout_buttons"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/button_answer"
+                app:layout_constraintStart_toStartOf="parent"
                 />
 
             <Button
                 android:id="@+id/button_answer"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:backgroundTint="@color/button_background_color"
-                android:text="@string/button_answer_str"
                 android:textColor="@color/button_text_color"
+                android:text="@string/button_answer_str"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/button_start"
-                app:layout_constraintEnd_toStartOf="@+id/button_next"
-                app:layout_constraintTop_toTopOf="@+id/layout_buttons"
-                app:layout_constraintLeft_toRightOf="@id/button_start"
-                app:layout_constraintRight_toLeftOf="@+id/button_next"
+                app:layout_constraintEnd_toStartOf="@+id/button_start"
+                app:layout_constraintStart_toEndOf="@+id/button_next"
                 />
 
             <Button
                 android:id="@+id/button_next"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:backgroundTint="@color/button_background_color"
-                android:text="@string/button_next_str"
                 android:textColor="@color/button_text_color"
+                android:text="@string/button_next_str"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/button_answer"
-                app:layout_constraintEnd_toStartOf="@+id/button_finished"
-                app:layout_constraintTop_toTopOf="@+id/layout_buttons"
-                app:layout_constraintLeft_toRightOf="@id/button_answer"
-                app:layout_constraintRight_toLeftOf="@+id/button_finished"
+                app:layout_constraintEnd_toStartOf="@+id/button_answer"
+                app:layout_constraintStart_toEndOf="@+id/button_finished"
                 />
 
             <Button
                 android:id="@+id/button_finished"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:backgroundTint="@color/button_background_color"
-                android:text="@string/button_finished_str"
                 android:textColor="@color/button_text_color"
+                android:text="@string/button_finished_str"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/button_next"
-                app:layout_constraintEnd_toStartOf="@+id/button_return"
-                app:layout_constraintTop_toTopOf="@+id/layout_buttons"
-                app:layout_constraintLeft_toRightOf="@id/button_next"
-                app:layout_constraintRight_toLeftOf="@+id/button_return"
+                app:layout_constraintEnd_toStartOf="@+id/button_next"
+                app:layout_constraintStart_toEndOf="@+id/button_return"
                 />
 
             <Button
                 android:id="@+id/button_return"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_height="match_parent"
                 android:backgroundTint="@color/button_background_color"
-                android:text="@string/button_return_str"
                 android:textColor="@color/button_text_color"
+                android:text="@string/button_return_str"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toEndOf="@+id/button_finished"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/layout_buttons"
-                app:layout_constraintLeft_toRightOf="@id/button_finished"
-                app:layout_constraintRight_toLeftOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/button_finished"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

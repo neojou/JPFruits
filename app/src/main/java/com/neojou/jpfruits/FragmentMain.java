@@ -1,15 +1,17 @@
 package com.neojou.jpfruits;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,13 +19,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.neojou.jpfruits.databinding.FragmentMainBinding;
 
 
-public class FragmentMain extends Fragment
+public class FragmentMain extends NJFragment
         implements View.OnClickListener {
     private static final String TAG="JPFruits:FragmentMain";
 
     FragmentMainBinding binding;
     FragmentQuestion frag_question;
     FragmentImage frag_image;
+    ConstraintLayout layout_buttons;
     Button button_start;
     Button button_answer;
     Button button_next;
@@ -31,14 +34,6 @@ public class FragmentMain extends Fragment
     Button button_return;
 
     boolean isAnswered;
-
-    int fragmain_screen_width;
-    int fragmain_screen_height;
-
-    public FragmentMain()
-    {
-        super(R.layout.fragment_main);
-    }
 
     @Override
     public View onCreateView(
@@ -49,13 +44,12 @@ public class FragmentMain extends Fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
         setViewItemsBinding();
         setButtons();
-
         isAnswered = false;
-
         return binding.getRoot();
     }
 
     private void setViewItemsBinding() {
+        layout_buttons = binding.layoutButtons;
         button_start = binding.buttonStart;
         button_answer = binding.buttonAnswer;
         button_next = binding.buttonNext;
@@ -63,9 +57,53 @@ public class FragmentMain extends Fragment
         button_return = binding.buttonReturn;
     }
 
+    private void setup_button_padding(DisplayMetrics dm) {
+        int screen_height_px = dm.heightPixels;
+        final float layout_height_ratio = 0.15f * 0.1f; // 10% for the space
+        int choice_px = (int)((float)(screen_height_px) * layout_height_ratio);
+        Log.d(TAG, "setup_button_padding() : padding px = " + choice_px);
+        if (choice_px < 20) {
+            Log.e(TAG, "setup_button_padding() : choice_px(" + choice_px + ") < 20");
+            return;
+        }
+        layout_buttons.setPadding(choice_px, choice_px, choice_px, choice_px);
+    }
+
+    private void setup_button_textsize(DisplayMetrics dm) {
+        int screen_width_px = dm.widthPixels;
+        final float layout_width_ratio = 0.6f;
+        final float max_words_num = 12.0f;
+        int choice_px = (int)((float)(screen_width_px) * layout_width_ratio / max_words_num);
+        Log.d(TAG, "setup_text_size() : padding px = " + choice_px);
+        if (choice_px < 48) {
+            Log.e(TAG, "setup_button_textsize() : choice_px(" + choice_px + ") < 48");
+            return;
+        }
+        button_start.setTextSize(TypedValue.COMPLEX_UNIT_PX, choice_px);
+        button_answer.setTextSize(TypedValue.COMPLEX_UNIT_PX, choice_px);
+        button_next.setTextSize(TypedValue.COMPLEX_UNIT_PX, choice_px);
+        button_finished.setTextSize(TypedValue.COMPLEX_UNIT_PX, choice_px);
+        button_return.setTextSize(TypedValue.COMPLEX_UNIT_PX, choice_px);
+    }
+
+    private void setup_button_display(DisplayMetrics dm) {
+        setup_button_padding(dm);
+        setup_button_textsize(dm);
+    }
+
+    private void init_screen()
+    {
+        DisplayMetrics dm = get_screen_display_metrics();
+        if (dm == null) {
+            Log.e(TAG, "init_screen() : DisplayMetrics is null");
+            return;
+        }
+        setup_button_display(dm);
+    }
+
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        init_screen();
         switch_to_main_page();
     }
 
@@ -151,6 +189,7 @@ public class FragmentMain extends Fragment
         set_buttons_to_question();
     }
 
+
     private void ft_switch_to_main() {
         FragmentManager fragment_manager;
         FragmentActivity ac = getActivity();
@@ -168,6 +207,7 @@ public class FragmentMain extends Fragment
         ft.setReorderingAllowed(true);
         ft.commit();
     }
+
 
     private void ft_switch_to_question() {
         FragmentManager fragment_manager;

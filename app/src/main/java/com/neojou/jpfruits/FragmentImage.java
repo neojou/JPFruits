@@ -1,38 +1,65 @@
 package com.neojou.jpfruits;
 
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+
+import androidx.databinding.DataBindingUtil;
+
+import com.neojou.jpfruits.databinding.FragmentImageBinding;
 
 
-public class FragmentImage extends Fragment {
+public class FragmentImage extends NJFragment {
     private static final String TAG="JPFruits:FragmentImage";
 
-    public FragmentImage()
-    {
-        super(R.layout.fragment_image);
-    }
+
+    FragmentImageBinding binding;
+    ImageView main_image;
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater,
+            @NonNull LayoutInflater inflater,
             ViewGroup container,
             Bundle savedInstanceState
     ) {
-        View view = inflater.inflate(R.layout.fragment_image, container, false);
-        if (view == null) {
-            Log.e(TAG, "onCreateView() inflate is null");
-        }
-        return view;
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_image, container, false);
+        setViewItemsBinding();
+        return binding.getRoot();
     }
 
-    @Override
+    private void setViewItemsBinding() {
+        main_image = binding.mainImage;
+    }
+
+        @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        set_image_padding();
     }
+
+    private void set_image_padding()
+    {
+        DisplayMetrics dm = get_screen_display_metrics();
+        if (dm == null) {
+            Log.e(TAG, "set_image_padding() : DisplayMetrics is null");
+            return;
+        }
+        int screen_width_px = dm.widthPixels;
+        final float layout_frame_rim_ratio = 0.08f; // 8% of the width
+        int choice_px = (int)((float)(screen_width_px) * layout_frame_rim_ratio);
+        Log.d(TAG, "set_image_padding() : padding px = " + choice_px);
+        if (choice_px < 20) {
+            Log.e(TAG, "set_image_padding() : choice_px(" + choice_px + ") < 20");
+            return;
+        }
+        main_image.setPadding(choice_px, choice_px, choice_px, choice_px);
+    }
+
 }
