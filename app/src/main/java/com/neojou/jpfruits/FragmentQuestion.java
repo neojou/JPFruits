@@ -201,9 +201,6 @@ public class FragmentQuestion extends NJFragment
         stats_show();
     }
 
-
-
-
     private void set_question_image(final DisplayMetrics dm, final Question q) {
 
         Activity activity = getActivity();
@@ -233,8 +230,6 @@ public class FragmentQuestion extends NJFragment
             Log.e(TAG, "set_answer_result_lines() : choice_height_px(" + choice_height_px + ") || choice_width_px(" + choice_width_px + ") < 48");
             return;
         }
-        Log.d(TAG, "set_answer_result_lines() : choice_px=" + choice_px);
-
         answer_result_line1.setTextSize(TypedValue.COMPLEX_UNIT_PX, choice_px);
         answer_result_line2.setTextSize(TypedValue.COMPLEX_UNIT_PX, choice_px);
         answer_result_line3.setTextSize(TypedValue.COMPLEX_UNIT_PX, choice_px);
@@ -248,8 +243,8 @@ public class FragmentQuestion extends NJFragment
         int screen_width_px = dm.widthPixels;
         int screen_height_px = dm.heightPixels;
         final float layout_width_ratio = 0.7f;
-        final float layout_height_ratio = 0.4f;
-        final int max_alphabet_num = 12;
+        final float layout_height_ratio = 0.5f;
+        final int max_alphabet_num = 9;
         int choice_width_px = (int)((float)(screen_width_px) * layout_width_ratio / (float)(max_alphabet_num));
         int choice_height_px = (int)((float)(screen_height_px) * layout_height_ratio / (float)(total_choice_num));
         int choice_px = choice_width_px;
@@ -258,7 +253,6 @@ public class FragmentQuestion extends NJFragment
             Log.e(TAG, "set_radio_button_selections() : choice_height_px(" + choice_height_px + ") || choice_width_px(" + choice_width_px + ") < 48");
             return;
         }
-        Log.d(TAG, "set_radio_button_selections() : choice_px=" + choice_px);
         for (int i = 0; i < total_choice_num; i++)
             choice_rb[i].setTextSize(TypedValue.COMPLEX_UNIT_PX, choice_px);
 
@@ -266,12 +260,9 @@ public class FragmentQuestion extends NJFragment
         choices[0] = q.choice1;
         choices[1] = q.choice2;
         choices[2] = q.choice3;
-        String contentstr = "1. " + choices[0];
-        choice_rb[0].setText(contentstr);
-        contentstr = "2. " + choices[1];
-        choice_rb[1].setText(contentstr);
-        contentstr = "3. " + choices[2];
-        choice_rb[2].setText(contentstr);
+        choice_rb[0].setText(choices[0]);
+        choice_rb[1].setText(choices[1]);
+        choice_rb[2].setText(choices[2]);
         set_radio_button_color(choice_rb[0], R.color.gray);
         set_radio_button_color(choice_rb[1], R.color.gray);
         set_radio_button_color(choice_rb[2], R.color.gray);
@@ -294,9 +285,7 @@ public class FragmentQuestion extends NJFragment
             return;
         }
 
-
         set_question_image(dm, q);
-
         set_answer_result_lines(dm);
         set_radio_button_selections(dm, q);
     }

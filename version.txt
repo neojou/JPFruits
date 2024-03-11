@@ -2,4 +2,6 @@ Version Code	Version Name	Description
 -------------------------------------------
 1		1.0		2024.3.8 on Google App Console for internal test2		1.01		Support Android 9 / Fix critical bug
 3		1.02		Fix the issues relative to Disability support
+4		1.03		Fix Disability Support issues
+5		1.04		Code Fuzzing : isMinifyEnabled = true
 

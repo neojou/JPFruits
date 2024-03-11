@@ -54,7 +54,7 @@ public class FragmentImage extends NJFragment {
         int screen_width_px = dm.widthPixels;
         final float layout_frame_rim_ratio = 0.08f; // 8% of the width
         int choice_px = (int)((float)(screen_width_px) * layout_frame_rim_ratio);
-        Log.d(TAG, "set_image_padding() : padding px = " + choice_px);
+        //Log.d(TAG, "set_image_padding() : padding px = " + choice_px);
         if (choice_px < 20) {
             Log.e(TAG, "set_image_padding() : choice_px(" + choice_px + ") < 20");
             return;

@@ -61,7 +61,7 @@ public class FragmentMain extends NJFragment
         int screen_height_px = dm.heightPixels;
         final float layout_height_ratio = 0.15f * 0.1f; // 10% for the space
         int choice_px = (int)((float)(screen_height_px) * layout_height_ratio);
-        Log.d(TAG, "setup_button_padding() : padding px = " + choice_px);
+        //Log.d(TAG, "setup_button_padding() : padding px = " + choice_px);
         if (choice_px < 20) {
             Log.e(TAG, "setup_button_padding() : choice_px(" + choice_px + ") < 20");
             return;
@@ -74,7 +74,7 @@ public class FragmentMain extends NJFragment
         final float layout_width_ratio = 0.6f;
         final float max_words_num = 12.0f;
         int choice_px = (int)((float)(screen_width_px) * layout_width_ratio / max_words_num);
-        Log.d(TAG, "setup_text_size() : padding px = " + choice_px);
+        //Log.d(TAG, "setup_text_size() : padding px = " + choice_px);
         if (choice_px < 48) {
             Log.e(TAG, "setup_button_textsize() : choice_px(" + choice_px + ") < 48");
             return;
