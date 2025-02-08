@@ -6,6 +6,23 @@ import java.io.InputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@startuml
+package com.neojou.jpfruits {
+    class FruitParser {
+        - static final String TAG = "JPFruit:FruitParser"
+                + FruitParser(InputStream is)
+                + FruitName getFruitName()
+    }
+
+    FruitParser ..|> JParser
+    FruitParser o-- InputStream
+    FruitParser o-- FruitName
+    FruitParser o-- Log
+    FruitParser o-- Pattern
+    FruitParser o-- Matcher
+}
+@enduml
+
 public class FruitParser extends JParser {
     private static final String TAG="JPFruit:FruitParser";
 

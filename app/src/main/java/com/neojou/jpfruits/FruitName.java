@@ -4,6 +4,21 @@ import android.util.Log;
 
 import java.util.List;
 
+@startuml
+package com.neojou.jpfruits {
+    class FruitName {
+        - static final String TAG = "JPFruits:FruitName"
+                + String eng_name
+        + String jp_name
+        + void log_dump()
+        + static void log_dump(List<FruitName> fl)
+    }
+
+    FruitName o-- Log
+    FruitName o-- List
+}
+@enduml
+
 public class FruitName {
     private static final String TAG="JPFruits:FruitName";
 

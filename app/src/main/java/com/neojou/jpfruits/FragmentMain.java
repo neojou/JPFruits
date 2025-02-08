@@ -18,6 +18,60 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.neojou.jpfruits.databinding.FragmentMainBinding;
 
+@startuml
+package com.neojou.jpfruits {
+    class FragmentMain {
+        - static final String TAG = "JPFruits:FragmentMain"
+                - FragmentMainBinding binding
+        - FragmentQuestion frag_question
+        - FragmentImage frag_image
+        - ConstraintLayout layout_buttons
+        - Button button_start
+        - Button button_answer
+        - Button button_next
+        - Button button_finished
+        - Button button_return
+        - boolean isAnswered
+        + View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        + void onViewCreated(View view, Bundle savedInstanceState)
+        + void onDestroyView()
+        + void onClick(View view)
+        - void setViewItemsBinding()
+        - void setup_button_padding(DisplayMetrics dm)
+        - void setup_button_textsize(DisplayMetrics dm)
+        - void setup_button_display(DisplayMetrics dm)
+        - void init_screen()
+        - void setButtons()
+        - void set_button_click_listener()
+        - void to_question_start()
+        - void to_check_answer()
+        - void to_next_question()
+        - void to_question_finished()
+        - void return_to_main()
+        - void switch_to_main_page()
+        - void switch_to_question()
+        - void ft_switch_to_main()
+        - void ft_switch_to_question()
+        - void set_buttons_to_main()
+        - void set_buttons_to_question()
+        - void set_buttons_to_return_only()
+    }
+
+    FragmentMain ..|> NJFragment
+    FragmentMain o-- FragmentMainBinding
+    FragmentMain o-- FragmentQuestion
+    FragmentMain o-- FragmentImage
+    FragmentMain o-- ConstraintLayout
+    FragmentMain o-- Button
+    FragmentMain o-- DisplayMetrics
+    FragmentMain o-- LayoutInflater
+    FragmentMain o-- ViewGroup
+    FragmentMain o-- Bundle
+    FragmentMain o-- View
+    FragmentMain o-- DataBindingUtil
+}
+@enduml
+
 
 public class FragmentMain extends NJFragment
         implements View.OnClickListener {

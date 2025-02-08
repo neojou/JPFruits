@@ -7,6 +7,25 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+@startuml
+package com.neojou.jpfruits {
+    class JPFruitActivity {
+        - FragmentManager fragment_manager
+        + void onCreate(Bundle savedInstanceState)
+        - void bindingViewItems()
+        - void ft_start()
+    }
+
+    JPFruitActivity ..|> AppCompatActivity
+    JPFruitActivity o-- FragmentManager
+    JPFruitActivity o-- FragmentMain
+    JPFruitActivity o-- FragmentTransaction
+    JPFruitActivity o-- DataBindingUtil
+    JPFruitActivity o-- FragmentQuestion
+}
+@enduml
+
+
 public class JPFruitActivity extends AppCompatActivity {
     FragmentManager fragment_manager;
 

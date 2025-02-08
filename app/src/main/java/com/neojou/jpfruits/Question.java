@@ -1,5 +1,20 @@
 package com.neojou.jpfruits;
 
+@startuml
+package com.neojou.jpfruits {
+    class Question {
+        - final String img_filename
+        - final String choice1
+        - final String choice2
+        - final String choice3
+        - final int right_choice
+        + Question(String filename, String choice1, String choice2, String choice3, int correct_answer)
+    }
+
+    Question o-- String
+}
+@enduml
+
 public class Question {
     final public String img_filename;
     final public String choice1;

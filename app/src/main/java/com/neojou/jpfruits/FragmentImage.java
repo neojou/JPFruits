@@ -14,6 +14,29 @@ import androidx.databinding.DataBindingUtil;
 
 import com.neojou.jpfruits.databinding.FragmentImageBinding;
 
+@startuml
+package com.neojou.jpfruits {
+    class FragmentImage {
+        - static final String TAG = "JPFruits:FragmentImage"
+                - FragmentImageBinding binding
+        - ImageView main_image
+        + View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        + void onViewCreated(View view, Bundle savedInstanceState)
+        - void setViewItemsBinding()
+        - void set_image_padding()
+    }
+
+    FragmentImage ..|> NJFragment
+    FragmentImage o-- FragmentImageBinding
+    FragmentImage o-- ImageView
+    FragmentImage o-- DisplayMetrics
+    FragmentImage o-- LayoutInflater
+    FragmentImage o-- ViewGroup
+    FragmentImage o-- Bundle
+    FragmentImage o-- View
+    FragmentImage o-- DataBindingUtil
+}
+@enduml
 
 public class FragmentImage extends NJFragment {
     private static final String TAG="JPFruits:FragmentImage";
