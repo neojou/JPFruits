@@ -25,55 +25,6 @@ import com.neojou.jpfruits.databinding.FragmentQuestionBinding;
 import java.util.ArrayList;
 import java.util.Collections;
 
-@startuml
-package com.neojou.jpfruits {
-    class FragmentQuestion {
-        - static final String TAG
-        - static FruitDataViewModel fruit_dvm
-        - FragmentQuestionBinding binding
-        - ImageView question_image
-        - TextView answer_result_line1
-        - TextView answer_result_line2
-        - TextView answer_result_line3
-        - RadioGroup choice_rd
-        - static final int total_choice_num
-        - final RadioButton[] choice_rb
-        - final String[] choices
-        - Question cur_question
-        - int cur_question_id
-        - int total_answered
-        - int correct_answered
-        - int wrong_answered
-        + void init_data()
-        + static void init_fruit_dvm(Application app)
-        + View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-        + void onDestroyView()
-        + void onViewCreated(View view, Bundle savedInstanceState)
-        + void check_answer()
-        - Question generate_question(int pos)
-        - void setViewItemsBinding()
-        - void set_next_question()
-        - void set_right_choice_button(int right_choice)
-        - void set_wrong_choice_button(int wrong_choice)
-        - void stats_set_start()
-        - void stats_add_if_answered_correct(boolean is_correct)
-    }
-
-    FragmentQuestion ..|> NJFragment
-    FragmentQuestion o-- FruitDataViewModel
-    FragmentQuestion o-- FragmentQuestionBinding
-    FragmentQuestion o-- ImageView
-    FragmentQuestion o-- TextView
-    FragmentQuestion o-- RadioGroup
-    FragmentQuestion o-- RadioButton
-    FragmentQuestion o-- Question
-    FragmentQuestion o-- Application
-    FragmentQuestion o-- LayoutInflater
-    FragmentQuestion o-- ViewGroup
-    FragmentQuestion o-- Bundle
-    FragmentQuestion o-- View
-}
-@enduml
 
 
 public class FragmentQuestion extends NJFragment

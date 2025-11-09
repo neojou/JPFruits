@@ -8,36 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-@startuml
-package com.neojou.jpfruits {
-    class FruitDataViewModel {
-        - static final String TAG = "JPFruits:FruitDataViewModel"
-                - Application app
-        - boolean is_loaded
-        - ArrayList<String> fruits_array
-        - ArrayList<String> jpfruits_array
-        - HashMap<String, String> eng_to_jp_name_map
-        - HashMap<String, String> jp_to_eng_name_map
-        + FruitDataViewModel(Application application)
-        - void load_data()
-        + int get_fruit_array_size()
-        + void shuffle()
-        + String get_fruit_engname_by_array_pos(int pos)
-        + String get_fruit_jpname_by_engname(String eng_name)
-        + ArrayList<String> copy_jpfruits_array()
-    }
-
-    FruitDataViewModel o-- Application
-    FruitDataViewModel o-- ArrayList
-    FruitDataViewModel o-- HashMap
-    FruitDataViewModel o-- FruitParser
-    FruitDataViewModel o-- FruitName
-    FruitDataViewModel o-- InputStream
-    FruitDataViewModel o-- R.raw
-    FruitDataViewModel o-- Log
-    FruitDataViewModel o-- Collections
-}
-@enduml
 
 public class FruitDataViewModel {
     private static final String TAG="JPFruits:FruitDataViewModel";
