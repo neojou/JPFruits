@@ -12,8 +12,8 @@ android {
         applicationId = "com.neojou.jpfruits"
         minSdk = 28
         targetSdk = 35
-        versionCode = 6
-        versionName = "2.00"
+        versionCode = 9
+        versionName = "2.03"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -23,11 +23,20 @@ android {
 
     buildTypes {
         release {
+            // Enables code-related app optimization
             isMinifyEnabled = true
+
+            // Enables resource shrinking
+            isShrinkResources = true
+
             proguardFiles(
+                // Default file with automatically generated optimization rules.
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
             )
+
+            ndk {
+                debugSymbolLevel = "SYMBOL_TABLE"  // 或 'FULL' 以獲得更多細節
+            }
         }
     }
     compileOptions {
@@ -47,6 +56,11 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+}
+
+// 新增：配置所有 JavaCompile tasks 以顯示詳細的棄用警告
+tasks.withType<JavaCompile> {
+    options.compilerArgs.add("-Xlint:deprecation")
 }
 
 dependencies {

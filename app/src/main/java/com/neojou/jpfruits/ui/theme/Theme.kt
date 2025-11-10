@@ -1,8 +1,10 @@
 package com.neojou.jpfruits.ui.theme
 
-import android.app.Activity
-import android.os.Build
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -45,26 +47,29 @@ fun JPFruitsTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        dynamicColor && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+            if (darkTheme) dynamicDarkColorScheme(context)
+            else dynamicLightColorScheme(context)
         }
-
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> darkColorScheme()  // 假設你有 DarkColorScheme；否則替換為你的自訂
+        else -> lightColorScheme()      // 假設你有 LightColorScheme；否則替換為你的自訂
     }
+
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
+            val window = (view.context as ComponentActivity).window  // 改用 ComponentActivity 以確保相容
+            // 啟用邊緣到邊緣模式（讓內容延伸到狀態列）
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+            // 調整狀態列圖示明暗（保留原邏輯：暗主題用淺色圖示）
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme  // 注意：通常暗主題設為 false（深色圖示）
         }
     }
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = Typography,  // 假設你有 Typography
         content = content
     )
 }

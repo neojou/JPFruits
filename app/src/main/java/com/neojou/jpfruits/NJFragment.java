@@ -27,8 +27,7 @@ public class NJFragment extends Fragment {
             return null;
         }
 
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        DisplayMetrics displaymetrics = activity.getResources().getDisplayMetrics();
         return displaymetrics;
     }
 
